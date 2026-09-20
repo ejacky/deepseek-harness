@@ -74,7 +74,7 @@ Legacy disk state remains available to link-only launches, old processes, and ro
 
 Link, dual, and runtime modes use the same generation schema and dependency-selection policy. Link mode persists the computed result, runtime mode installs it only in the process, and dual mode requires Node's materialized result to equal the generation route.
 
-The `dsh` launcher selects runtime mode when an ordinary Node caller omits `resolutionMode`. A pkg executable always selects runtime mode, and the Electron Host explicitly selects runtime mode in both development and packaged builds before any profile row mounts. Plain Node tests and low-level embedders can explicitly select link, dual, or runtime.
+The `dsh` launcher selects runtime mode when an ordinary Node caller omits `resolutionMode`, except for its tsx source entry, which selects link mode so a workspace package is not split across the source and built planes ([source-launch link resolution](../bug-fix/2026-09-20-source-launch-link-resolution.md)). A pkg executable always selects runtime mode, and the Electron Host explicitly selects runtime mode in both development and packaged builds before any profile row mounts. Plain Node tests and low-level embedders can explicitly select link, dual, or runtime.
 
 Runtime mode requires a supported Node Internal loader interface and does not create, update, or retire fallback links. Dual mode retains link writes and fails when Node's disk result differs from the generation. Writable profile state and package-manager transactions remain outside the resolver.
 

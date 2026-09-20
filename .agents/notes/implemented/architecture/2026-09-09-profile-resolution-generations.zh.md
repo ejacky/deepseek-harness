@@ -74,7 +74,7 @@ runtime-only 启动流程不创建、更新或退休 symlink 和代理包。reso
 
 link、dual 与 runtime 模式使用同一种 generation schema 和依赖选择策略。link 模式持久化计算结果，runtime 模式只在进程内安装，dual 模式要求 Node 的磁盘结果与 generation 路由一致。
 
-普通 Node 调用方省略 `resolutionMode` 时，`dsh` launcher 选择 runtime 模式。pkg 可执行文件始终选择 runtime，Electron Host 在开发与打包构建中也会在挂载任何 profile 条目前显式选择 runtime。普通 Node 测试与底层嵌入方可以显式选择 link、dual 或 runtime。
+普通 Node 调用方省略 `resolutionMode` 时，`dsh` launcher 选择 runtime 模式；唯一例外是它的 tsx 源码入口，该入口选择 link 模式，以免同一个工作区包被拆分到源码与构建两个平面（[源码启动的 link 解析](../bug-fix/2026-09-20-source-launch-link-resolution.zh.md)）。pkg 可执行文件始终选择 runtime，Electron Host 在开发与打包构建中也会在挂载任何 profile 条目前显式选择 runtime。普通 Node 测试与底层嵌入方可以显式选择 link、dual 或 runtime。
 
 runtime 模式要求受支持的 Node Internal loader 接口，并且不会创建、更新或退休 fallback 链接。dual 模式保留链接写入，并在 Node 的磁盘结果与 generation 不同时失败。可写 profile 状态和包管理器事务不属于 resolver。
 

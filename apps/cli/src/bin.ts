@@ -13,6 +13,14 @@ import { resolveDshHome } from '@deepseek-ai/dsh-home-paths'
 import { parseDshArgs } from './args.ts'
 import { reportStartupFailure } from './startup-diagnostics.ts'
 
+// The repository script runs this entry through tsx, whose tsconfig `paths`
+// map resolves a built plugin module's workspace imports back to `src`. Runtime
+// package resolution loads plugin entry points from built `lib`, so a package
+// reached by both planes would exist as two module instances and lose symbol
+// identity. A source launch therefore keeps the native link backend; a plain
+// Node launch of the bundled bin keeps the runtime default.
+const sourceLaunch = fileURLToPath(import.meta.url).endsWith('.ts')
+
 // Both the source tree (apps/cli/src) and the bundled bin (apps/cli/lib) sit
 // one directory under apps/cli, so the checked-in manifest resolves with the
 // same relative hop from either artifact.
@@ -41,6 +49,7 @@ export async function runCli(): Promise<void> {
           fromDefaultProfile: invocation.fromDefaultProfile,
           patchFiles: invocation.patches,
           args: invocation.args,
+          ...(sourceLaunch ? { resolutionMode: 'link' as const } : {}),
         })
       } catch (error) {
         if (!(error instanceof StartupError)) throw error
