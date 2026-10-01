@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=DeepSeek Harness
+Name[zh_CN]=DeepSeek Harness
+Comment=Start or stop the DeepSeek Harness Web GUI (port 3080)
+Comment[zh_CN]=启动或停止 DeepSeek Harness Web GUI（端口 3080）
+Exec=/home/jackyzhang/deepseek-harness/start-web.sh
+Path=/home/jackyzhang/deepseek-harness
+Icon=/home/jackyzhang/deepseek-harness/dsh-harness.png
+Terminal=false
+Categories=Development;
+Keywords=deepseek;harness;agent;
+StartupNotify=false
